@@ -1,0 +1,72 @@
+version: '3'
+services:
+
+    mysqldb:
+        image: mysql:5.7
+        ports:
+            - 3306:3306
+        volumes:
+            - "~/public_html/.data/mysqldb:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+#        networks:
+#            - backend
+
+    php:
+        build: php7-fpm
+        ports:
+            - 9000:9000
+        volumes:
+            - ~/public_html:/var/www/html
+        working_dir: /var/www/html
+        depends_on:
+            - mysqldb
+#        networks:
+#            - backend
+
+    nginx:
+        image: nginx:1.13.3
+        ports:
+            - "80:80"
+        volumes:
+            - ~/public_html:/var/www/html
+            - ./nginx/conf.d:/etc/nginx/conf.d/
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/restrict.conf:/etc/nginx/restrict.conf
+        depends_on:
+            - php
+#        networks:
+#            - backend
+
+    rabbitmq:
+        image: "rabbitmq:3-management"
+        environment:
+            RABBITMQ_DEFAULT_USER: "guest"
+            RABBITMQ_DEFAULT_PASS: "guest"
+            RABBITMQ_DEFAULT_VHOST: "/"
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+#        networks:
+#            - backend
+
+    adminer:
+        image: adminer:4.3.1
+        ports:
+            - 8080:8080
+        depends_on:
+            - mysqldb
+            - php
+
+
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin
+#        ports:
+#            - "8080:80"
+#         environment:
+#               - PMA_HOST=phpmyadmin
+#        depends_on:
+#            - mysqldb
+                
+#networks:
+#    backend:
