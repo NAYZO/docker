@@ -58,6 +58,11 @@ services:
             - mysqldb
             - php
 
+    elasticsearch:
+        image: elasticsearch:1.7
+        ports:
+          - "9200:9200"
+          - "9300:9300"
 
 #    phpmyadmin:
 #        image: phpmyadmin/phpmyadmin
