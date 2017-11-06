@@ -2,7 +2,7 @@
 
 docker-compose up -d
 
-sudo ./insertVhosts.sh hosts
+sudo ./addVhosts.sh hosts
 
 docker exec -it docker_php_1 zsh
 
