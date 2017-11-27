@@ -2,6 +2,8 @@ FROM debian:jessie
 
 MAINTAINER Ala Eddine Khefifi <alakhefifi@gmail.com>
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
   locales \
   curl \
@@ -85,6 +87,13 @@ RUN composer --version
 # Install zsh
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 RUN sed -i "s/plugins=(/plugins=(github history symfony2 docker docker-compose /g" ~/.zshrc
+
+# Install phpunit
+RUN wget https://phar.phpunit.de/phpunit-6.4.phar
+RUN chmod +x phpunit-6.4.phar
+RUN mv phpunit-6.4.phar /usr/local/bin/phpunit
+RUN phpunit --version
+
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
