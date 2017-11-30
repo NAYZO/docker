@@ -63,6 +63,9 @@ RUN sed -i "s/opcache.max_accelerated_files = .*/opcache.max_accelerated_files =
 RUN sed -i "s/realpath_cache_size = .*/realpath_cache_size = 4096K/" /etc/php/7.1/fpm/php.ini
 RUN sed -i "s/realpath_cache_ttl = .*/realpath_cache_ttl = 600/" /etc/php/7.1/fpm/php.ini
 
+RUN sed -i -e 's/pcntl_signal,//g' /etc/php/7.1/fpm/php.ini
+RUN sed -i -e 's/pcntl_signal_dispatch,//g' /etc/php/7.1/fpm/php.ini
+
 RUN sed -i "s/display_errors = Off/display_errors = On/" /etc/php/7.1/fpm/php.ini
 RUN sed -i "s/short_open_tag = On/short_open_tag = Off/" /etc/php/7.1/fpm/php.ini
 RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 1024M/" /etc/php/7.1/fpm/php.ini
